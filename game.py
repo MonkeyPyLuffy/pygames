@@ -2,12 +2,30 @@ import pygame
 import constantes
 from personaje import Personaje
 
-player = Personaje(50, 50)
-
 pygame.init()
 screen =  pygame.display.set_mode((constantes.ALTO_VENTANA,
                                    constantes.ANCHO_VENTANA ))
 pygame.display.set_caption("mi primer juego")
+
+def escalar_img(image, escale):
+    w = image.get_width()
+    h = image.get_height()
+    nueva_imagen = nueva_imagen = pygame.transform.scale(image, (w * escale, h * escale))
+    return nueva_imagen
+
+animaciones = []
+for i in range(7):
+    print (i)
+
+img = pygame.image.load(f"assets/player_{i}.jpg")
+img = escalar_img(img, constantes.SCALA_PERSONAJE)
+animaciones.append(img)
+
+player = Personaje(50, 50,  animaciones)
+
+
+
+pygame.init()
 
 mover_arriba = False
 mover_abajo = False
@@ -41,9 +59,8 @@ while running:
 
       player.movimiento(delta_x, delta_y)
 
-
-player.drawer(screen)
-for event in pygame.event.get():
+      player.drawer(screen)
+      for event in pygame.event.get():
         if event.type == pygame.QUIT:
           running = False
 
@@ -62,33 +79,23 @@ for event in pygame.event.get():
 
 
 
-           if event.type == pygame.KEYUP: 
-              if event.key == pygame.K_a:
-                 mover_izquierda = False
+        if event.type == pygame.KEYUP: 
+            if event.key == pygame.K_a:
+               mover_izquierda = False
 
-           if event.key == pygame.K_d:
-             mover_derecha = False
+            if event.key == pygame.K_d:
+              mover_derecha = False
 
-           if event.key == pygame.K_w:
-            mover_arriba = False
+            if event.key == pygame.K_w:
+              mover_arriba = False
 
-           if event.key == pygame.K_s:
-            mover_abajo = False
-
-
+            if event.key == pygame.K_s:
+              mover_abajo = False
 
 
 
 
-# :)
-
-
-
-
-
-
-
-pygame.display.update()
+      pygame.display.update()
 
 
 
