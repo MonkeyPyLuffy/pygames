@@ -1,7 +1,7 @@
 import pygame
 import constantes
 from personaje import Personaje
-
+from weapon import arma
 pygame.init()
 screen = pygame.display.set_mode((constantes.ANCHO_VENTANA, constantes.ALTO_VENTANA))
 pygame.display.set_caption("Mi primer juego")
@@ -14,8 +14,32 @@ for i in range(1, 5):  # Suponiendo que tienes 4 imágenes "player_1.png", "play
                                        int(img.get_height() * constantes.SCALA_PERSONAJE)))
     animaciones.append(img)
 
+#arma
+imagen_pistola = pygame.image.load(f"arma/pistola.jpeg").convert_alpha()
+imagen_pistola = pygame.transform.scale(imagen_pistola, (15, 15))
+
+
 # Crear el personaje con la lista de animaciones
 player = Personaje(50, 50, animaciones)
+#crear arma
+pistola = arma(imagen_pistola)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 mover_arriba = False
 mover_abajo = False
@@ -44,8 +68,14 @@ while running:
     if mover_abajo:
         delta_y = constantes.VELOCIDAD          
 
+
     player.movimiento(delta_x, delta_y)
+    #actualizar estado del arma
+    pistola.update(player)
+    
     player.drawer(screen)
+    #dibujar el arma
+    pistola.dibujar(screen)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -54,6 +84,7 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_a:
                 mover_izquierda = True
+                pistola.angulo += 180
             if event.key == pygame.K_d:
                 mover_derecha = True
             if event.key == pygame.K_w:

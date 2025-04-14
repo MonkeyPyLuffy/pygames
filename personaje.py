@@ -11,7 +11,7 @@ class Personaje():
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
         self.image = self.animaciones[self.frame_index]
-        self.shape = pygame.Rect(x, y, self.image.get_width(), self.image.get_height())
+        self.shape = self.image.get_rect()
 
     def movimiento(self, delta_x, delta_y):
         if delta_x < 0:
