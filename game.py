@@ -1,10 +1,16 @@
 import pygame
 import constantes
 from personaje import Personaje
-from weapon import arma
+from weapon import Arma
 pygame.init()
 screen = pygame.display.set_mode((constantes.ANCHO_VENTANA, constantes.ALTO_VENTANA))
 pygame.display.set_caption("Mi primer juego")
+
+def escalar_img(image, scale):
+    w = image.get_width()
+    h = image.get_height()
+    nueva_imagen = pygame.transform.scale(image, (w*scale, h*scale))
+    return nueva_imagen
 
 # Cargar múltiples imágenes para la animación
 animaciones = []
@@ -15,31 +21,19 @@ for i in range(1, 5):  # Suponiendo que tienes 4 imágenes "player_1.png", "play
     animaciones.append(img)
 
 #arma
-imagen_pistola = pygame.image.load(f"arma/pistola.jpeg").convert_alpha()
-imagen_pistola = pygame.transform.scale(imagen_pistola, (15, 15))
+imagen_pistola = pygame.image.load(f"arma/pistola.png").convert_alpha()
+imagen_pistola = escalar_img(imagen_pistola, constantes.SCALA_ARMA)
+
+imagen_bala = pygame.image.load(f"arma/bullet.png").convert_alpha()
+imagen_bala = escalar_img(imagen_bala, constantes.SCALA_ARMA)
 
 
 # Crear el personaje con la lista de animaciones
 player = Personaje(50, 50, animaciones)
 #crear arma
-pistola = arma(imagen_pistola)
+pistola = Arma(imagen_pistola, imagen_bala)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+grupos_balas = pygame.sprite.Group()
 
 mover_arriba = False
 mover_abajo = False
@@ -71,12 +65,24 @@ while running:
 
     player.movimiento(delta_x, delta_y)
     #actualizar estado del arma
-    pistola.update(player)
+    for bala in grupos_balas:
+       bala.dibujar(screen)
+
+    bala = pistola.update(player)
+    if bala:
+     grupos_balas.add(bala)
+    for bala in grupos_balas:
+        bala.update 
+
+
+    print (grupos_balas)   
     
     player.drawer(screen)
     #dibujar el arma
     pistola.dibujar(screen)
 
+
+    print(grupos_balas)
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False

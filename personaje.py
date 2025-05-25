@@ -11,7 +11,8 @@ class Personaje():
         self.frame_index = 0
         self.update_time = pygame.time.get_ticks()
         self.image = self.animaciones[self.frame_index]
-        self.shape = self.image.get_rect()
+        self.forma = self.image.get_rect()
+        self.forma.center = (x, y)
 
     def movimiento(self, delta_x, delta_y):
         if delta_x < 0:
@@ -19,8 +20,8 @@ class Personaje():
         if delta_x > 0:
             self.flip = False 
 
-        self.shape.x += delta_x
-        self.shape.y += delta_y
+        self.forma.x += delta_x
+        self.forma.y += delta_y
 
         # Si hay movimiento, actualizar animación
         if delta_x != 0 or delta_y != 0:
@@ -43,4 +44,4 @@ class Personaje():
 
     def drawer(self, interfaz):
         imagen_flip = pygame.transform.flip(self.image, self.flip, False)
-        interfaz.blit(imagen_flip, self.shape.topleft)
+        interfaz.blit(imagen_flip, self.forma.topleft)
